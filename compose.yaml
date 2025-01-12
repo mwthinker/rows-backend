@@ -1,0 +1,5 @@
+services:
+  rows-backend:
+    image: "rows"
+    ports:
+      - "8080:8080"

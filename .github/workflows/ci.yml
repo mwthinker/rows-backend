@@ -1,0 +1,31 @@
+name: CI
+on: [push, workflow_dispatch]
+
+jobs:
+  job:
+    name: ${{ matrix.os }}-${{ github.workflow }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            preset: 'windows'
+          - os: ubuntu-latest
+            preset: 'unix'
+          - os: macos-latest
+            preset: 'macos'
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'adopt'
+
+      - name: Run Maven install
+        shell: bash
+        run: mvn clean install
+
