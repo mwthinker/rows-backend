@@ -1,0 +1,6 @@
+services:
+  rows-backend:
+    build: .
+    image: "rows-backend"
+    ports:
+      - "8081:8080"
