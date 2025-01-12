@@ -11,30 +11,30 @@ import java.util.Set;
 
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private static Set<WebSocketSession> sessions = new HashSet<>();
+	private static Set<WebSocketSession> sessions = new HashSet<>();
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) {
-        sessions.add(session);
-    }
+	@Override
+	public void afterConnectionEstablished(WebSocketSession session) {
+		sessions.add(session);
+	}
 
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
-        for (WebSocketSession webSocketSession : sessions) {
-            if (webSocketSession.isOpen()) {
-                try {
-                    webSocketSession.sendMessage(message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+	@Override
+	protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+		for (WebSocketSession webSocketSession : sessions) {
+			if (webSocketSession.isOpen()) {
+				try {
+					webSocketSession.sendMessage(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus){
-        // your code here
-        System.out.println("Connection closed");
-        sessions.remove(session);
-    }
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus){
+		// your code here
+		System.out.println("Connection closed");
+		sessions.remove(session);
+	}
 }
