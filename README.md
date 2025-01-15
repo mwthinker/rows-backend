@@ -35,5 +35,120 @@ To rebuild the container with no cache and show build output
 docker compose build --progress=plain --no-cache
 ```
 
+## WebSocket Protocol
+
+
+At connection from SERVER.
+```json
+{
+  "type": "CONNECT",
+  "id": "1234"
+}
+```
+response from CLIENT
+```json
+{
+  "name": "CONNECT",
+  "result": "SUCCESS"
+}
+```
+
+Client want to create a game
+```json
+{
+  "type": "CREATE_GAME",
+  "id": "1234"
+}
+```
+response from SERVER
+```json
+{
+  "name": "CREATE_GAME",
+  "status": "SUCCESS",
+  "gameId": "5678",
+  "player": "X"
+}
+```
+
+Client want to join a game
+```json
+{
+  "type": "JOIN_GAME",
+  "gameId": "1234"
+}
+```
+response from SERVER
+```json
+{
+  "name": "JOIN_GAME",
+  "status": "SUCCESS",
+  "gameId": "5678",
+  "player": "X"
+}
+```
+
+Client first move:
+```json
+{
+  "type": "MOVE",
+  "id": "1234",
+  "player": "X",
+  "x": 1,
+  "y": 1
+}
+```
+response from SERVER
+```json
+{
+  "name": "MOVE",
+  "id": "1234",
+  "status": "SUCCESS",
+  "gameId": "5678",
+  "player": "X",
+  "x": 1,
+  "y": 1,
+  "gamehash": "1234567890"
+}
+``` 
+Or if the move is invalid
+```json
+{
+  "name": "MOVE",
+  "status": "FAIL",
+  "message": "Invalid move",
+  "gamehash": "1234567890"
+}
+```
+
+Client want to get the game board
+```json
+{
+  "type": "GET_BOARD",
+  "gameId": "5678"
+}
+```
+response from SERVER
+```json
+{
+  "name": "GET_BOARD",
+  "status": "SUCCESS",
+  "gameId": "5678",
+  "game": {
+    "bestOf": 5,
+    "nextMove": "O",
+    "board": [
+      { "x": 1, "y": 1, "player": "X" },
+      { "x": 1, "y": 2, "player": "X" },
+      { "x": 1, "y": 3, "player": "O" }
+    ]
+  },
+  "gamehash": "1234567890"
+}
+```
+
+
+
+
+
 ## License
 MIT
