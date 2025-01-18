@@ -4,6 +4,8 @@ A backend for a game of five in a row on an infinite board. Using spring boot an
 ## Prerequisites
 Java with Jdk 21, maven. Docker and docker-compose for running the server in a container.
 
+Frontend code ([client](https://github.com/mwthinker/rows-backend/blob/master/client/README.md)) using node.js and yarn.
+
 ## Run java directly in the terminal
 ```bash
 mvn spring-boot:run
@@ -25,7 +27,7 @@ docker compose up -d
 ```
 
 
-To log in to the container for debugging maybe?
+To log in to the container for debugging maybe
 ```bash
 docker exec -it rows-backend /bin/bash
 ```

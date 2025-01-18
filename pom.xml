@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>se.mwthinker</groupId>
 	<artifactId>rows-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>rows-backend</name>
 	<description>Act as a server for a rows game</description>
 	<url/>
@@ -31,6 +31,8 @@
 
 		<junit.version>5.11.3</junit.version>
 		<mockito.version>5.15.2</mockito.version>
+
+		<frontend-src-dir>client</frontend-src-dir>
 	</properties>
 
 	<dependencies>
@@ -38,6 +40,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+
 
 		<!--dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -114,6 +118,73 @@
 					<argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
 				</configuration>
 			</plugin>
+
+			<!-- Used to manage frontend dependencies and build the frontend code. It installs Node.js and yarn (through corepack), and runs yarn commands for building the frontend. -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.15.1</version>
+				<configuration>
+					<nodeVersion>v22.13.0</nodeVersion>
+					<yarnVersion>4.1.0</yarnVersion>
+					<workingDirectory>${frontend-src-dir}</workingDirectory>
+					<installDirectory>${project.build.directory}</installDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+						<id>install-node-and-corepack</id>
+						<goals>
+							<goal>install-node-and-corepack</goal>
+						</goals>
+						<!-- optional: default phase is "generate-resources" -->
+						<phase>generate-resources</phase>
+					</execution>
+					<execution>
+						<id>install</id>
+						<goals>
+							<goal>corepack</goal>
+						</goals>
+						<configuration>
+							<arguments>yarn install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build</id>
+						<goals>
+							<goal>corepack</goal>
+						</goals>
+						<configuration>
+							<arguments>yarn build</arguments> <!-- TODO! Make sure this is the correct command -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Used to copy the built frontend resources to the output directory of the Maven build. -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>copy-frontend-build</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontend-src-dir}/dist</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+//import { useParams } from 'react-router-dom';
 
 
 
 function Game() {
-  const { gameId } = useParams();  
+  //const { gameId } = useParams();  
   const [gridSize, setGridSize] = useState(25);
   const [cellSize, setCellSize] = useState(25);
   const [fontSize, setFontSize] = useState(20);

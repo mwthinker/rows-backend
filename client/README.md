@@ -1,9 +1,17 @@
 # Client
 
 ## Installation
-`yarn`
+```bash
+corepack enable
+yarn install
+```
 
 ## Commands
-Development: `yarn dev`
+```bash
+yarn dev
+```
 
-Dummy server: `node dummy-server/server.js`
+```bash
+# Dummy server (probably broken)
+node dummy-server/server.js
+```
