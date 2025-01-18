@@ -1,4 +1,4 @@
-package se.mwthinker.rows_backend;
+package se.mwthinker.rows;
 
 import java.util.HashSet;
 import java.util.Set;

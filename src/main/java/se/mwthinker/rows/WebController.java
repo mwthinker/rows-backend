@@ -1,4 +1,4 @@
-package se.mwthinker.rows_backend;
+package se.mwthinker.rows;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

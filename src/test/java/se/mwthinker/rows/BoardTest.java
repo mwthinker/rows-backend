@@ -1,4 +1,4 @@
-package se.mwthinker.rows_backend;
+package se.mwthinker.rows;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
