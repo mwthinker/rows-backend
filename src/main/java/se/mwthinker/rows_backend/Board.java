@@ -1,9 +1,8 @@
 package se.mwthinker.rows_backend;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class Board {
 	private final int maxNumberInARow;
@@ -46,38 +45,39 @@ public class Board {
 		if (!cells.contains(new Cell(x, y, CellState.X)) || !cells.contains(new Cell(x, y, CellState.O))) {
 			Cell cell = new Cell(x, y, state);
 			cells.add(cell);
-
-			int count = max(
-					countInARowHorizontal(cell),
-					countInARowVertical(cell),
-					countInARowDiagonal1(cell),
-					countInARowDiagonal2(cell)
-			);
-			gameOver = count >= maxNumberInARow;
-			return true;
+			gameOver = isMaxInARow(cell);
 		}
 
-		return false;
+		return gameOver;
 	}
 
-	private int countInARowHorizontal(Cell cell) {
+	private boolean isMaxInARow(Cell cell) {
 		if (cell.state() == CellState.EMPTY) {
-			return 0;
+			return false;
 		}
 
+		return Stream.of(new Direction(1, 0),
+						new Direction(0, 1),
+						new Direction(1, 1),
+						new Direction(1, -1))
+				.anyMatch(dir -> countInRow(cell, dir) >= maxNumberInARow);
+	}
+
+	private int countInRow(Cell cell, Direction dir) {
 		int x = cell.x();
 		int y = cell.y();
 		CellState state = cell.state();
+
 		int count = 1;
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x + i, y, state))) {
+		for (int i = 1; i < maxNumberInARow; ++i) {
+			if (cells.contains(new Cell(x + i * dir.dx, y + i * dir.dy, state))) {
 				count++;
 			} else {
 				break;
 			}
 		}
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x - i, y, state))) {
+		for (int i = 1; i < maxNumberInARow; ++i) {
+			if (cells.contains(new Cell(x - i * dir.dx, y - i * dir.dy, state))) {
 				count++;
 			} else {
 				break;
@@ -86,86 +86,6 @@ public class Board {
 		return count;
 	}
 
-	private int countInARowVertical(Cell cell) {
-		if (cell.state() == CellState.EMPTY) {
-			return 0;
-		}
-
-		int x = cell.x();
-		int y = cell.y();
-		CellState state = cell.state();
-		int count = 1;
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x, y + i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x, y - i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		return count;
-	}
-
-	private int countInARowDiagonal1(Cell cell) {
-		if (cell.state() == CellState.EMPTY) {
-			return 0;
-		}
-
-		int x = cell.x();
-		int y = cell.y();
-		CellState state = cell.state();
-		int count = 1;
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x + i, y + i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x - i, y - i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		return count;
-	}
-
-	private int countInARowDiagonal2(Cell cell) {
-		if (cell.state() == CellState.EMPTY) {
-			return 0;
-		}
-
-		int x = cell.x();
-		int y = cell.y();
-		CellState state = cell.state();
-		int count = 1;
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x + i, y - i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		for (int i = 1; i < maxNumberInARow; i++) {
-			if (cells.contains(new Cell(x - i, y + i, state))) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		return count;
-	}
-
-	private static int max(Integer... vals) {
-		return Collections.max(List.of(vals));
-	}
+	private record Direction(int dx, int dy) {}
 
 }

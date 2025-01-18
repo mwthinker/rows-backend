@@ -60,7 +60,35 @@ class BoardTest {
 						...O..
 						...O..
 						""", 4),
-						true)
+						true),
+				Arguments.of(getCellFromStrings("""
+						.XXXO..
+						.XOO...
+						..O....
+						...O...
+						""", 4),
+						false),
+				Arguments.of(getCellFromStrings("""
+						.XXXO..
+						.XOO...
+						..O....
+						.O.O...
+						""", 4),
+						true),
+				Arguments.of(getCellFromStrings("""
+						.XXXO..
+						.XOX...
+						..O.X..
+						...O.X.
+						""", 4),
+						true),
+				Arguments.of(getCellFromStrings("""
+						.XXXO..
+						.XOX...
+						..O.X..
+						...O...
+						""", 4),
+						false)
 		);
 	}
 
