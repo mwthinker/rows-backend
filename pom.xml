@@ -126,7 +126,7 @@
 				<version>1.15.1</version>
 				<configuration>
 					<nodeVersion>v22.13.0</nodeVersion>
-					<yarnVersion>4.1.0</yarnVersion>
+					<yarnVersion>v4.1.0</yarnVersion>
 					<workingDirectory>${frontend-src-dir}</workingDirectory>
 					<installDirectory>${project.build.directory}</installDirectory>
 				</configuration>
