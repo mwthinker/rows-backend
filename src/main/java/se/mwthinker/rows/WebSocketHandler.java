@@ -1,18 +1,21 @@
 package se.mwthinker.rows;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import se.mwthinker.rows.protocol.CreateGame;
+import se.mwthinker.rows.protocol.GameLobbyState;
+import se.mwthinker.rows.protocol.GameSessionState;
+import se.mwthinker.rows.protocol.JoinGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 class GameSession {
 	private final List<User> users = new ArrayList<>();
@@ -25,6 +28,10 @@ class GameSession {
 
 	int getNumberOfUsers() {
 		return users.size();
+	}
+
+	void addUser(User user) {
+		users.add(user);
 	}
 
 	void receiveMessage(User user, GameSessionState state) {
@@ -55,76 +62,28 @@ class UserSession {
 	}
 }
 
-// Enum for type
-enum LoobyType {
-	CREATE_GAME,
-	JOIN_GAME
-}
-
-// Base class
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = CreateGame.class, name = "CREATE_GAME"),
-		@JsonSubTypes.Type(value = JoinGame.class, name = "JOIN_GAME")
-})
-abstract class GameLobbyState {
-	public LoobyType type;
-}
-
-// Subclass for STATE_A
-class CreateGame extends GameLobbyState {
-	public String propertyA;
-}
-
-// Subclass for STATE_B
-class JoinGame extends GameLobbyState {
-	public int propertyB;
-}
-
-enum GameSessionType {
-	GAME_MOVE
-}
-
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = CreateGame.class, name = "GAME_MOVE")
-})
-abstract class GameSessionState {
-	public LoobyType type; // Use enum here
-}
-
-class GameMoveState extends GameSessionState {
-	public GameSessionType type;
-}
-
-// Subclass for STATE_A
-class GameMove extends GameLobbyState {
-	public String propertyA;
-}
-
 public class WebSocketHandler extends TextWebSocketHandler {
 	private static Map<WebSocketSession, User> userBySession = new HashMap<>();
-	private static Map<User, GameSession> gameSessionByUser = new HashMap<>();
+	private static Map<UUID, GameSession> gameSessionByGameId = new HashMap<>();
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) {
-		userBySession.put(session, new User("Anonymous"));
+		userBySession.put(session, new User(session, "Anonymous"));
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) {
 		User user = userBySession.get(session);
 
-		GameSession gameSession = gameSessionByUser.get(user);
+		GameSession gameSession = gameSessionByGameId.get(user);
 		if (gameSession != null) {
 			var gameSessionState = readMessage(session, message, GameSessionState.class);
 			gameSession.receiveMessage(user, gameSessionState);
 		} else {
-			GameLobbyState state = readMessage(session, message, GameLobbyState.class);
-			if (state instanceof CreateGame) {
-				handleGameLobbyState(user, (CreateGame) state);
-			} else if (state instanceof JoinGame) {
-				handleGameLobbyState(user, (JoinGame) state);
+			switch (readMessage(session, message, GameLobbyState.class)) {
+				case CreateGame createGame -> handleGameLobbyState(user, createGame);
+				case JoinGame joinGame -> handleGameLobbyState(user, joinGame);
+				default -> throw new IllegalStateException("Unexpected value: " + message.getPayload());
 			}
 		}
 	}
@@ -133,7 +92,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		try {
 			return new ObjectMapper().readValue(message.getPayload(), clazz);
 		} catch (IOException e) {
-			sendMessage(webSocketSession, "Invalid message");
+			sendMessage(webSocketSession, "Invalid message: " + message.getPayload());
 			throw new RuntimeException(e);
 		}
 	}
@@ -146,8 +105,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		}
 	}
 
+	public static <T> void sendMessageJson(WebSocketSession user, T object) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			user.sendMessage(new TextMessage(mapper.writeValueAsString(object)));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void handleGameLobbyState(User user, JoinGame joinGame) {
-		// TODO! Join an existing game session
+		var gameSession = gameSessionByGameId.get(joinGame.gameId());
+
+		if (gameSession == null) {
+			return;
+		}
+		if (gameSession.getNumberOfUsers() >= 2) {
+			sendMessage(user.getSession(), "Game is full");
+			return;
+		}
+		gameSession.addUser(user);
 	}
 
 	private void handleGameLobbyState(User user, CreateGame createGame) {

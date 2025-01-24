@@ -26,7 +26,6 @@ docker compose build --progress=plain --no-cache
 docker compose up -d
 ```
 
-
 To log in to the container for debugging maybe
 ```bash
 docker exec -it rows-backend /bin/bash
@@ -38,7 +37,6 @@ docker compose build --progress=plain --no-cache
 ```
 
 ## WebSocket Protocol
-
 
 At connection from SERVER.
 ```json

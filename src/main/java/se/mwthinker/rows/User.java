@@ -1,20 +1,29 @@
 package se.mwthinker.rows;
 
-public class User {
-	private final String username;
-	private final String id;
+import org.springframework.web.socket.WebSocketSession;
 
-	public User(String username) {
+import java.util.UUID;
+
+public class User {
+	private final WebSocketSession session;
+	private final String username;
+	private final UUID uuid;
+
+	public User(WebSocketSession session, String username) {
+		this.session = session;
 		this.username = username;
-		// Generate random id
-		this.id = String.valueOf((int) (Math.random() * 1000));
+		this.uuid = UUID.randomUUID();
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public String getId() {
-		return id;
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public WebSocketSession getSession() {
+		return session;
 	}
 }
