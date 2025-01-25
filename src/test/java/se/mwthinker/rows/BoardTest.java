@@ -7,6 +7,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
+import se.mwthinker.rows.game.Board;
+import se.mwthinker.rows.game.CellState;
 
 import java.util.stream.Stream;
 

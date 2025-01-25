@@ -40,34 +40,35 @@ docker compose build --progress=plain --no-cache
 
 ## WebSocket Protocol
 
-At connection from SERVER.
+Error message:
 ```json
 {
-  "type": "CONNECT",
-  "id": "1234"
-}
-```
-response from CLIENT
-```json
-{
-  "name": "CONNECT",
-  "result": "SUCCESS"
+  "message": "ERROR",
+  "message": "Protocol error"
 }
 ```
 
-Client want to create a game
+
+At connection from SERVER.
 ```json
 {
-  "type": "CREATE_GAME",
-  "id": "1234"
+  "message": "S2C_USER",
+  "id": "f9d60613-1842-4e9f-88f6-f19fb6b5a980"
+}
+```
+
+Client want to create a game.
+```json
+{
+  "message": "C2S_CREATE_GAME"
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "CREATE_GAME",
+  "message": "S2C_CREATED_GAME",
   "status": "SUCCESS",
-  "gameId": "5678",
+  "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
 }
 ```
@@ -75,16 +76,15 @@ response from SERVER
 Client want to join a game
 ```json
 {
-  "type": "JOIN_GAME",
+  "message": "C2S_JOIN_GAME",
   "gameId": "1234"
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "JOIN_GAME",
-  "status": "SUCCESS",
-  "gameId": "5678",
+  "name": "S2C_JOINED_GAME",
+  "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
 }
 ```
@@ -92,24 +92,24 @@ response from SERVER
 Client first move:
 ```json
 {
-  "type": "MOVE",
-  "id": "1234",
-  "player": "X",
-  "x": 1,
-  "y": 1
+  "message": "S2C_MOVE",
+  "position": {
+    "x": 1,
+    "y": 1
+  }
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "MOVE",
-  "id": "1234",
-  "status": "SUCCESS",
+  "name": "S2C_MOVED",
   "gameId": "5678",
   "player": "X",
-  "x": 1,
-  "y": 1,
-  "gamehash": "1234567890"
+  "position": {
+    "x": 1,
+    "y": 1
+  },
+  "gameHash": "1234567890"
 }
 ``` 
 Or if the move is invalid
@@ -125,7 +125,7 @@ Or if the move is invalid
 Client want to get the game board
 ```json
 {
-  "type": "GET_BOARD",
+  "message": "GET_BOARD",
   "gameId": "5678"
 }
 ```

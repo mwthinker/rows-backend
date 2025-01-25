@@ -1,4 +1,4 @@
-package se.mwthinker.rows;
+package se.mwthinker.rows.game;
 
 import java.util.HashSet;
 import java.util.Set;
