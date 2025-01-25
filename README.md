@@ -9,6 +9,8 @@ Frontend code ([client](https://github.com/mwthinker/rows-backend/blob/master/cl
 ## Run java directly in the terminal
 ```bash
 mvn spring-boot:run
+# or run with a dev profile with settings in application-dev.properties
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Page is available at http://localhost:8080/
