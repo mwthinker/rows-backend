@@ -9,7 +9,7 @@ export function Splash() {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const socket$ = webSocket('ws://localhost:3000');
+    const socket$ = webSocket('ws://localhost:3000/ws');
 
     const subscription = socket$.pipe(
       retry(3),
