@@ -5,6 +5,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import se.mwthinker.rows.protocol.C2sCreateGame;
+import se.mwthinker.rows.protocol.C2sGetRooms;
 import se.mwthinker.rows.protocol.C2sJoinGame;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
@@ -40,6 +41,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			switch (readMessage(user, message, Message.class)) {
 				case C2sCreateGame ignored -> handleCreateGame(user);
 				case C2sJoinGame joinGame -> handleJoinGame(user, joinGame);
+				case C2sGetRooms ignored -> handleGetRooms(user);
 				default -> throw new IllegalStateException("Unexpected value: " + message.getPayload());
 			}
 		}
@@ -57,6 +59,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	private void handleCreateGame(User user) {
 		var gameSession = new GameSession(user, 5);
 		sendMessage(user, new S2cCreatedGame(gameSession.getGameId()));
+	}
+
+	private void handleGetRooms(User user) {
+		// TODO! Implement
+		sendMessage(user, new Error("Not implemented"));
 	}
 
 	@Override

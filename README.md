@@ -48,12 +48,27 @@ Error message:
 }
 ```
 
-
-At connection from SERVER.
+From client get rooms:
 ```json
 {
-  "message": "S2C_USER",
-  "id": "f9d60613-1842-4e9f-88f6-f19fb6b5a980"
+  "message": "C2S_GET_ROOMS"
+}
+```
+Response from server
+```json
+{
+  "message": "S2C_ROOMS",
+  "rooms": [
+    {
+      "gameId": "1234",
+      "players": [
+        {
+          "player": "X",
+          "id": "aa42acc7-76d6-446e-a287-df99e29707b4"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -125,14 +140,14 @@ Or if the move is invalid
 Client want to get the game board
 ```json
 {
-  "message": "GET_BOARD",
+  "message": "C2S_GET_BOARD",
   "gameId": "5678"
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "GET_BOARD",
+  "name": "S2C_BOARD",
   "status": "SUCCESS",
   "gameId": "5678",
   "game": {
@@ -147,10 +162,6 @@ response from SERVER
   "gamehash": "1234567890"
 }
 ```
-
-
-
-
 
 ## License
 MIT

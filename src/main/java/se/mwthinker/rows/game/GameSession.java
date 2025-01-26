@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static se.mwthinker.rows.game.MessageUtil.sendMessage;
-
 class GameSession {
 	private final List<User> users = new ArrayList<>();
 	private Board board;
@@ -33,7 +31,7 @@ class GameSession {
 			return;
 		}
 		users.add(user);
-		user.sendToClient(new S2cJoinedGame(gameId));
+		sendToAllUsers(new S2cJoinedGame(gameId));
 	}
 
 	public void receiveMessage(User user, Message message) {
