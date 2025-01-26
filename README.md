@@ -43,7 +43,7 @@ docker compose build --progress=plain --no-cache
 Error message:
 ```json
 {
-  "message": "ERROR",
+  "type": "ERROR",
   "message": "Protocol error"
 }
 ```
@@ -51,13 +51,13 @@ Error message:
 From client get rooms:
 ```json
 {
-  "message": "C2S_GET_ROOMS"
+  "type": "C2S_GET_ROOMS"
 }
 ```
 Response from server
 ```json
 {
-  "message": "S2C_ROOMS",
+  "type": "S2C_ROOMS",
   "rooms": [
     {
       "gameId": "1234",
@@ -75,13 +75,13 @@ Response from server
 Client want to create a game.
 ```json
 {
-  "message": "C2S_CREATE_GAME"
+  "type": "C2S_CREATE_GAME"
 }
 ```
 response from SERVER
 ```json
 {
-  "message": "S2C_CREATED_GAME",
+  "type": "S2C_CREATED_GAME",
   "status": "SUCCESS",
   "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
@@ -91,14 +91,14 @@ response from SERVER
 Client want to join a game
 ```json
 {
-  "message": "C2S_JOIN_GAME",
+  "type": "C2S_JOIN_GAME",
   "gameId": "1234"
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "S2C_JOINED_GAME",
+  "type": "S2C_JOINED_GAME",
   "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
 }
@@ -107,7 +107,7 @@ response from SERVER
 Client first move:
 ```json
 {
-  "message": "S2C_MOVE",
+  "type": "S2C_MOVE",
   "position": {
     "x": 1,
     "y": 1
@@ -117,7 +117,7 @@ Client first move:
 response from SERVER
 ```json
 {
-  "name": "S2C_MOVED",
+  "type": "S2C_MOVED",
   "gameId": "5678",
   "player": "X",
   "position": {
@@ -130,7 +130,7 @@ response from SERVER
 Or if the move is invalid
 ```json
 {
-  "name": "MOVE",
+  "type": "MOVE",
   "status": "FAIL",
   "message": "Invalid move",
   "gamehash": "1234567890"
@@ -140,14 +140,14 @@ Or if the move is invalid
 Client want to get the game board
 ```json
 {
-  "message": "C2S_GET_BOARD",
+  "type": "C2S_GET_BOARD",
   "gameId": "5678"
 }
 ```
 response from SERVER
 ```json
 {
-  "name": "S2C_BOARD",
+  "type": "S2C_BOARD",
   "status": "SUCCESS",
   "gameId": "5678",
   "game": {

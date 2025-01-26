@@ -3,7 +3,9 @@ package se.mwthinker.rows.game;
 import se.mwthinker.rows.protocol.C2sMove;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
+import se.mwthinker.rows.protocol.Player;
 import se.mwthinker.rows.protocol.ProtocolException;
+import se.mwthinker.rows.protocol.Room;
 import se.mwthinker.rows.protocol.S2cJoinedGame;
 
 import java.util.ArrayList;
@@ -46,6 +48,15 @@ class GameSession {
 
 	private void sendToAllUsers(Message message) {
 		users.forEach(u -> u.sendToClient(message));
+	}
+
+	public Room getRoom() {
+		// TODO! Fix player 'X' or 'O', maybe enum?
+		return new Room(gameId,
+				users.stream()
+						.map(user -> new Player("X", user.getUuid()))
+						.toList()
+		);
 	}
 
 }

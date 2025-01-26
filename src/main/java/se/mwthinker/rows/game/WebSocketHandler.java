@@ -9,11 +9,15 @@ import se.mwthinker.rows.protocol.C2sGetRooms;
 import se.mwthinker.rows.protocol.C2sJoinGame;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
+import se.mwthinker.rows.protocol.Room;
 import se.mwthinker.rows.protocol.S2cCreatedGame;
+import se.mwthinker.rows.protocol.S2cRooms;
 import se.mwthinker.rows.protocol.S2cUser;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static se.mwthinker.rows.game.MessageUtil.readMessage;
 import static se.mwthinker.rows.game.MessageUtil.sendMessage;
@@ -62,8 +66,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	}
 
 	private void handleGetRooms(User user) {
-		// TODO! Implement
-		sendMessage(user, new Error("Not implemented"));
+		List<Room> rooms = gameSessionByUser.values().stream()
+				.distinct()
+				.map(GameSession::getRoom)
+				.collect(Collectors.toList());
+
+		user.sendToClient(new S2cRooms(rooms));
 	}
 
 	@Override
