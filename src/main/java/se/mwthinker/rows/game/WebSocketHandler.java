@@ -9,7 +9,7 @@ import se.mwthinker.rows.protocol.C2sGetRooms;
 import se.mwthinker.rows.protocol.C2sJoinGame;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
-import se.mwthinker.rows.protocol.Room;
+import se.mwthinker.rows.protocol.S2cRooms.Room;
 import se.mwthinker.rows.protocol.S2cCreatedGame;
 import se.mwthinker.rows.protocol.S2cRooms;
 import se.mwthinker.rows.protocol.S2cUser;

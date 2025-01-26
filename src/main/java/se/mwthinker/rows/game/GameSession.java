@@ -3,22 +3,21 @@ package se.mwthinker.rows.game;
 import se.mwthinker.rows.protocol.C2sMove;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
-import se.mwthinker.rows.protocol.Player;
 import se.mwthinker.rows.protocol.ProtocolException;
-import se.mwthinker.rows.protocol.Room;
 import se.mwthinker.rows.protocol.S2cJoinedGame;
+import se.mwthinker.rows.protocol.S2cRooms;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 class GameSession {
-	private final List<User> users = new ArrayList<>();
+	private final List<Player> players = new ArrayList<>();
 	private Board board;
 	private UUID gameId;
 
-	public GameSession(User player1, int maxNumberInARow) {
-		this.users.add(player1);
+	public GameSession(User user, int maxNumberInARow) {
+		this.players.add(new Player(Piece.X, user));
 		this.board = new Board(maxNumberInARow);
 		gameId = UUID.randomUUID();
 	}
@@ -28,11 +27,11 @@ class GameSession {
 	}
 
 	public void tryToAddUser(User user) {
-		if (users.size() >= 2) {
+		if (players.size() >= 2) {
 			user.sendToClient(new Error("Game is full"));
 			return;
 		}
-		users.add(user);
+		players.add(new Player(Piece.O, user));
 		sendToAllUsers(new S2cJoinedGame(gameId));
 	}
 
@@ -47,16 +46,37 @@ class GameSession {
 	}
 
 	private void sendToAllUsers(Message message) {
-		users.forEach(u -> u.sendToClient(message));
+		players.forEach(u -> u.sendToClient(message));
 	}
 
-	public Room getRoom() {
-		// TODO! Fix player 'X' or 'O', maybe enum?
-		return new Room(gameId,
-				users.stream()
-						.map(user -> new Player("X", user.getUuid()))
+	public S2cRooms.Room getRoom() {
+		return new S2cRooms.Room(gameId,
+				players.stream()
+						.map(player -> new S2cRooms.Room.Player(player.getPiece(), player.getUser().getUuid()))
 						.toList()
 		);
+	}
+
+	private static class Player {
+		private final Piece piece;
+		private final User user;
+
+		public Player(Piece piece, User user) {
+			this.piece = piece;
+			this.user = user;
+		}
+
+		public Piece getPiece() {
+			return piece;
+		}
+
+		public User getUser() {
+			return user;
+		}
+
+		public void sendToClient(Message message) {
+			user.sendToClient(message);
+		}
 	}
 
 }
