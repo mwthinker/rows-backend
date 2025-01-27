@@ -1,4 +1,8 @@
 package se.mwthinker.rows.protocol;
 
-public record S2cMoved(String propertyA) implements Message {
+import se.mwthinker.rows.game.Piece;
+
+import java.util.UUID;
+
+public record S2cMoved(UUID gameId, Piece piece, int x, int y, String hash) implements Message {
 }

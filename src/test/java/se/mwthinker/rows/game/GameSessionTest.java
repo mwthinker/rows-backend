@@ -50,7 +50,7 @@ class GameSessionTest {
 		gameSession.tryToAddUser(user2);
 
 		// Then
-		S2cJoinedGame expectedMessage = new S2cJoinedGame(gameSession.getGameId());
+		S2cJoinedGame expectedMessage = new S2cJoinedGame(Piece.O);
 		verify(user1).sendToClient(expectedMessage);
 		verify(user2).sendToClient(expectedMessage);
 	}

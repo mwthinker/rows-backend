@@ -31,8 +31,9 @@ class GameSession {
 			user.sendToClient(new Error("Game is full"));
 			return;
 		}
-		players.add(new Player(Piece.O, user));
-		sendToAllUsers(new S2cJoinedGame(gameId));
+		Player player = new Player(Piece.O, user);
+		players.add(player);
+		sendToAllUsers(new S2cJoinedGame(player.getPiece()));
 	}
 
 	public void receiveMessage(User user, Message message) {

@@ -40,6 +40,14 @@ docker compose build --progress=plain --no-cache
 
 ## WebSocket Protocol
 
+Connected to server, from server:
+```json
+{
+  "type": "S2C_USER",
+  "id": "aa42acc7-76d6-446e-a287-df99e29707b4"
+}
+```
+
 Error message:
 ```json
 {
@@ -82,7 +90,6 @@ response from SERVER
 ```json
 {
   "type": "S2C_CREATED_GAME",
-  "status": "SUCCESS",
   "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
 }
@@ -99,7 +106,6 @@ response from SERVER
 ```json
 {
   "type": "S2C_JOINED_GAME",
-  "gameId": "aa42acc7-76d6-446e-a287-df99e29707b4",
   "player": "X"
 }
 ```
@@ -108,10 +114,8 @@ Client first move:
 ```json
 {
   "type": "S2C_MOVE",
-  "position": {
-    "x": 1,
-    "y": 1
-  }
+  "x": 1,
+  "y": 1
 }
 ```
 response from SERVER
@@ -120,10 +124,8 @@ response from SERVER
   "type": "S2C_MOVED",
   "gameId": "5678",
   "player": "X",
-  "position": {
-    "x": 1,
-    "y": 1
-  },
+  "x": 1,
+  "y": 1,
   "gameHash": "1234567890"
 }
 ``` 

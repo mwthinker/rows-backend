@@ -1,4 +1,4 @@
 package se.mwthinker.rows.protocol;
 
-public record C2sMove(String propertyA) implements Message {
+public record C2sMove(int x, int y) implements Message {
 }
