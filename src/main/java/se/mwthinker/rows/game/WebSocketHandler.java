@@ -23,14 +23,20 @@ import static se.mwthinker.rows.game.MessageUtil.readMessage;
 import static se.mwthinker.rows.game.MessageUtil.sendMessage;
 
 public class WebSocketHandler extends TextWebSocketHandler {
+	private final UserFactory userFactory;
+
 	private static final Map<WebSocketSession, User> userBySession = new HashMap<>();
 	private static final Map<User, GameSession> gameSessionByUser = new HashMap<>();
 
+	public WebSocketHandler(UserFactory userFactory) {
+		this.userFactory = userFactory;
+	}
+
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) {
-		var user = new User(session);
+		var user = userFactory.createUser(session);
 		userBySession.put(session, user);
-		sendMessage(user, new S2cUser(user.getUuid()));
+		user.sendToClient(new S2cUser(user.getUuid()));
 	}
 
 	@Override

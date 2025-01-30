@@ -10,7 +10,7 @@ public class User {
 	private final String username;
 	private final UUID uuid;
 
-	public User(WebSocketSession session) {
+	public User(WebSocketSession session, UUID uuid) {
 		this.session = session;
 		this.username = "Anonymous";
 		this.uuid = UUID.randomUUID();

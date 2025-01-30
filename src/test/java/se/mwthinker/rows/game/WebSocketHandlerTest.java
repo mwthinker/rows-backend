@@ -1,21 +1,22 @@
 package se.mwthinker.rows.game;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import se.mwthinker.rows.protocol.C2sGetRooms;
+import se.mwthinker.rows.protocol.ProtocolException;
+import se.mwthinker.rows.protocol.S2cRooms;
+import se.mwthinker.rows.protocol.S2cUser;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,58 +28,64 @@ class WebSocketHandlerTest {
 	@Mock
 	private WebSocketSession webSocketSession;
 	@Mock
-	private MockedStatic<UUID> uuidMockedStatic;
-	@Mock
-	private UUID uuid;
+	private UserFactory userFactory;
 
 	@BeforeEach
 	void setUp() {
-		webSocketHandler = new WebSocketHandler();
+		webSocketHandler = new WebSocketHandler(userFactory);
 	}
 
-	void handleNewConnection() throws IOException {
+	@Test
+	void handleNewConnection() {
 		// Given
-		var uuid = createUUID("UUID_1");
-		uuidMockedStatic.when(UUID::randomUUID).thenReturn(uuid);
+		var uuid = mock(UUID.class);
+		User user = createUser(uuid);
+		when(userFactory.createUser(webSocketSession)).thenReturn(user);
 
 		// When
 		webSocketHandler.afterConnectionEstablished(webSocketSession);
 
 		// Then
-		verify(webSocketSession).sendMessage(argThat(TextMessageMatcher.of(
-				"""
-						{"type":"connected", "id":"UUID_1"}
-					"""
-		)));
+		verify(user).sendToClient(new S2cUser(uuid));
 	}
 
-	private static UUID createUUID(String uuid) {
-		var mockUuid = mock(UUID.class);
-		when(mockUuid.toString()).thenReturn(uuid);
-		return mockUuid;
+	@Test
+	void handleGetRooms_whenNoRoomsAvailable() {
+		// Given
+		User user = createUser();
+		addUsers(createUser(), user, createUser());
+
+		// When
+		webSocketHandler.handleTextMessage(user.getSession(), createTextMessage(new C2sGetRooms()));
+
+		// Then
+		verify(user).sendToClient(new S2cRooms(List.of()));
 	}
 
-
-	private static class TextMessageMatcher implements ArgumentMatcher<TextMessage> {
-		private final String data;
-
-		public TextMessageMatcher(String data) {
-			this.data = data.trim();
+	private void addUsers(User... users) {
+		for (var user : users) {
+			when(userFactory.createUser(user.getSession())).thenReturn(user);
+			webSocketHandler.afterConnectionEstablished(user.getSession());
 		}
+	}
 
-		public static TextMessageMatcher of(String data) {
-			return new TextMessageMatcher(data);
-		}
+	private static User createUser(UUID uuid) {
+		var user = mock(User.class);
+		when(user.getUuid()).thenReturn(uuid);
+		when(user.getSession()).thenReturn(mock(WebSocketSession.class));
+		return user;
+	}
 
-		@Override
-		public boolean matches(TextMessage other) {
-			String otherData = new String(other.getPayload());
-			return data.equals(otherData);
-		}
+	private static User createUser() {
+		return createUser(UUID.randomUUID());
+	}
 
-		@Override
-		public String toString() {
-			return data;
+	private static TextMessage createTextMessage(Object object) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return new TextMessage(mapper.writeValueAsString(object));
+		} catch (IOException e) {
+			throw new ProtocolException(e);
 		}
 	}
 
