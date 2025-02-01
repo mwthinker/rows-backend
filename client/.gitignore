@@ -18,7 +18,7 @@ dist-ssr
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
-!.yarn/sdks
+#!.yarn/sdks # Commented out => must run `yarn dlx @yarnpkg/sdks vscode` for vscode support
 !.yarn/versions
 
 # Editor directories and files

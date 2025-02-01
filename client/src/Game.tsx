@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 //import { useParams } from 'react-router-dom';
 
 
-
 function Game() {
   //const { gameId } = useParams();  
   const [gridSize, setGridSize] = useState(25);
