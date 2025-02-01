@@ -2,7 +2,6 @@ package se.mwthinker.rows.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
 import se.mwthinker.rows.protocol.ProtocolException;

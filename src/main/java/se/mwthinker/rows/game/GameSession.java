@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-class GameSession {
+public class GameSession {
 	private final List<Player> players = new ArrayList<>();
 	private Board board;
 	private UUID gameId;
 
-	public GameSession(User user, int maxNumberInARow) {
+	public GameSession(UUID uuid, User user, int maxNumberInRow) {
 		this.players.add(new Player(Piece.X, user));
-		this.board = new Board(maxNumberInARow);
-		gameId = UUID.randomUUID();
+		this.board = new Board(maxNumberInRow);
+		gameId = uuid;
 	}
 
 	public UUID getGameId() {

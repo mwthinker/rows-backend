@@ -32,8 +32,8 @@ class GameSessionTest {
 	@Test
 	void createNewGameSession() {
 		// Given
-		var gameSession1 = new GameSession(user1, MAX_NUMBER_IN_ROW);
-		var gameSession2 = new GameSession(user1, MAX_NUMBER_IN_ROW);
+		var gameSession1 = new GameSession(UUID.randomUUID(), user1, MAX_NUMBER_IN_ROW);
+		var gameSession2 = new GameSession(UUID.randomUUID(), user1, MAX_NUMBER_IN_ROW);
 
 		// When/Then
 		assertThat(gameSession1.getGameId()).isNotEqualTo(gameSession2.getGameId());
@@ -44,7 +44,7 @@ class GameSessionTest {
 	@Test
 	void joinExistingGame_withOnlyOnePlayer() {
 		// Given
-		var gameSession = new GameSession(user1, MAX_NUMBER_IN_ROW);
+		var gameSession = new GameSession(UUID.randomUUID(), user1, MAX_NUMBER_IN_ROW);
 
 		// When
 		gameSession.tryToAddUser(user2);
