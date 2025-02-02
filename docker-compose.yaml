@@ -3,4 +3,4 @@ services:
     build: .
     image: "rows-backend"
     ports:
-      - "8081:8080"
+      - "3000:3000"
