@@ -10,6 +10,9 @@ yarn install
 ```bash
 yarn dev
 ```
+### Potential errors
+*On Windows:* Might require repo being stored on C:-drive, due to bug in Vite. 
+
 
 ## VSCode
 For language support in VSCode run 
@@ -25,3 +28,6 @@ CSS files must be set to language Tailwind CSS in order to get IntelliSense.
 # Dummy server (probably broken)
 node dummy-server/server.js
 ```
+
+
+
