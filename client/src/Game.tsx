@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 //import { useParams } from 'react-router-dom';
 
 
@@ -108,6 +109,7 @@ function Game() {
           gridTemplateColumns: `repeat(${gridSize}, ${cellSize}px)`,
           gridTemplateRows: `repeat(${gridSize}, ${cellSize}px)`,
           gap: '0',
+
         }}
       >
         {board.map((row, rowIndex) =>
@@ -118,22 +120,15 @@ function Game() {
               style={{
                 width: `${cellSize}px`,
                 height: `${cellSize}px`,
-                border: '1px solid #d1d5db',
-                backgroundColor: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 fontSize: `${fontSize}px`,
-                cursor: 'pointer',
               }}
               className={`
                 flex items-center justify-center
-                font-black
-                ${cell === 'X' ? 'text-red-500' : 'text-blue-500'}
+                font-black boardsquare
+                ${cell === '' ? '' : 'filled'}
+                ${cell === 'X' ? 'cross' : 'circle'}
                 `}
-            >
-              {cell}
-            </button>
+            ></button>
           ))
         )}
       </div>
