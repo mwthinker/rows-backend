@@ -2,25 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-.boardsquare {
-    border: 1px solid #d1d5db;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.boardsquare.filled {
-    
-}
-.boardsquare.cross.filled:after {
-    content: 'X';
-    color: red;
-}
-.boardsquare.circle.filled:after {
-    content: 'O';
-    color: blue;
+@layer components {
+    .button {
+        @apply bg-white 
+            hover:bg-gray-100 
+            text-gray-800 
+            font-semibold 
+            py-2 
+            px-4 
+            border 
+            border-gray-400 
+            rounded 
+            shadow;
+    }
 }
