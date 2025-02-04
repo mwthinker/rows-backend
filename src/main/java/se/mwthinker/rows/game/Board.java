@@ -52,10 +52,6 @@ public class Board {
 	}
 
 	private boolean isMaxInARow(Cell cell) {
-		if (cell.state() == CellState.EMPTY) {
-			return false;
-		}
-
 		return Stream.of(new Direction(1, 0),
 						new Direction(0, 1),
 						new Direction(1, 1),
