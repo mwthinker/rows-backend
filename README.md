@@ -13,7 +13,7 @@ mvn spring-boot:run
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-Page is available at http://localhost:8080/
+Page is available at http://localhost:3000/
 
 ## Run docker for server
 To install on Docker on Ubuntu/Debian
