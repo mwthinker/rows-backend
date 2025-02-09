@@ -10,15 +10,16 @@ const C2S_CREATE_GAME = {
   type: "C2S_CREATE_GAME"
 }
 
-type Room = {
+type Game = {
   gameId: string;
   players: any[];
+  started?: boolean;
 }
 
 export function Games() {
   const navigate = useNavigate();
 
-  const [games, setGames] = useState<Room[]>([]);
+  const [games, setGames] = useState<Game[]>([]);
   const { socket, isConnected } = useWebSocket();
 
   const handleRequestRooms = () => {
@@ -78,7 +79,9 @@ export function Games() {
               <td className="border border-gray-500 px-4 py-2 text-center">
                 <button
                   className="cursor-pointer px-4 py-2 bg-blue-500 rounded text-white hover:bg-gray-600"
-                  onClick={() => navigate(`/games/${game.gameId}`)}
+                  onClick={() => {
+                    navigate(`/games/${game.gameId}`);
+                  }}
                 >
                   Join Game
                 </button>

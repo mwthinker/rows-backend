@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import Board from './components/Board';
-import GameEndResult from './components/GameEndResult';
+import Board from '../Board';
+import GameEndResult from '../GameEndResult';
 
 //import { useParams } from 'react-router-dom';
 
 
-function Game() {
+function StartedGame() {
   //const { gameId } = useParams();  
   const [gridSize, setGridSize] = useState(25);
   const [cellSize, setCellSize] = useState(25);
@@ -96,4 +96,4 @@ function Game() {
   );
 }
 
-export default Game;
+export default StartedGame;

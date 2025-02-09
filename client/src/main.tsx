@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Splash from './Splash.tsx';
 import Games from './Games.tsx';
-import Game from './Game.tsx';
+import Game from './components/Game/Game.tsx';
 import { WebSocketProvider } from './WebSocketContext';
 
 const App = () => (
