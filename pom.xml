@@ -41,8 +41,6 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
-
-
 		<!--dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-docker-compose</artifactId>
@@ -183,6 +181,29 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>3.2.1263</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>process-classes</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<jsonLibrary>jackson2</jsonLibrary>
+					<classes>
+						<class>se.mwthinker.rows.protocol.Message</class>
+					</classes>
+					<outputFile>client/src/protocol/protocol.d.ts</outputFile>
+					<outputKind>module</outputKind>
+				</configuration>
 			</plugin>
 
 		</plugins>
