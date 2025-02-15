@@ -5,7 +5,7 @@ import se.mwthinker.rows.protocol.Error;
 import se.mwthinker.rows.protocol.Message;
 import se.mwthinker.rows.protocol.ProtocolException;
 import se.mwthinker.rows.protocol.S2cJoinedGame;
-import se.mwthinker.rows.protocol.S2cRooms;
+import se.mwthinker.rows.protocol.S2cGames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +50,10 @@ public class GameSession {
 		players.forEach(u -> u.sendToClient(message));
 	}
 
-	public S2cRooms.Room getRoom() {
-		return new S2cRooms.Room(gameId,
+	public S2cGames.Game getRoom() {
+		return new S2cGames.Game(gameId,
 				players.stream()
-						.map(player -> new S2cRooms.Room.Player(player.getPiece(), player.getUser().getUuid()))
+						.map(player -> new S2cGames.Game.Player(player.getPiece(), player.getUser().getUuid()))
 						.toList()
 		);
 	}

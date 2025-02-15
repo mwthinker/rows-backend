@@ -38,7 +38,7 @@ export function Games() {
     const subscription = socket.subscribe({
       next: (message: any) => {
         if (message.type === 'S2C_ROOMS') {
-          setGames(message.rooms || []);
+          setGames(message.games || []);
           return;
         }
 

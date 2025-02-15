@@ -56,17 +56,17 @@ Error message:
 }
 ```
 
-From client get rooms:
+From client get games:
 ```json
 {
-  "type": "C2S_GET_ROOMS"
+  "type": "C2S_GET_GAMES"
 }
 ```
 Response from server
 ```json
 {
-  "type": "S2C_ROOMS",
-  "rooms": [
+  "type": "S2C_GAMES",
+  "games": [
     {
       "gameId": "1234",
       "players": [
@@ -135,33 +135,32 @@ Or if the move is invalid
   "type": "MOVE",
   "status": "FAIL",
   "message": "Invalid move",
-  "gamehash": "1234567890"
+  "gameHash": "1234567890"
 }
 ```
 
-Client want to get the game board
+Client want to get the whole game
 ```json
 {
-  "type": "C2S_GET_BOARD",
+  "type": "C2S_GET_GAME",
   "gameId": "5678"
 }
 ```
 response from SERVER
 ```json
 {
-  "type": "S2C_BOARD",
-  "status": "SUCCESS",
+  "type": "S2C_GAME",
   "gameId": "5678",
-  "game": {
+  "board": {
     "bestOf": 5,
     "nextMove": "O",
-    "board": [
+    "cells": [
       { "x": 1, "y": 1, "player": "X" },
       { "x": 1, "y": 2, "player": "X" },
       { "x": 1, "y": 3, "player": "O" }
     ]
   },
-  "gamehash": "1234567890"
+  "gameHash": "1234567890"
 }
 ```
 

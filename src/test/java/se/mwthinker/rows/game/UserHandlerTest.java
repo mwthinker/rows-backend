@@ -6,9 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.mwthinker.rows.protocol.C2sCreateGame;
-import se.mwthinker.rows.protocol.C2sGetRooms;
+import se.mwthinker.rows.protocol.C2sGetGames;
 import se.mwthinker.rows.protocol.S2cCreatedGame;
-import se.mwthinker.rows.protocol.S2cRooms;
+import se.mwthinker.rows.protocol.S2cGames;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,10 +51,10 @@ class UserHandlerTest {
 		User user = mock(User.class);
 
 		// When
-		userHandler.handleMessage(user, new C2sGetRooms());
+		userHandler.handleMessage(user, new C2sGetGames());
 
 		// Then
-		verify(user).sendToClient(new S2cRooms(List.of()));
+		verify(user).sendToClient(new S2cGames(List.of()));
 	}
 
 	private static GameSession mockGameSession(UUID gameId) {
