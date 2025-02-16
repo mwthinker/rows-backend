@@ -5,9 +5,9 @@ import './index.css';
 import Splash from './Splash.tsx';
 import Games from './Games.tsx';
 import Game from './components/Game/Game.tsx';
-import { WebSocketProvider } from './WebSocketContext';
+import { WebSocketProvider } from './services/WebSocketContext.tsx';
 
-const App = () => (
+export const App = () => (
   <Router>
     <WebSocketProvider>
       <Routes>

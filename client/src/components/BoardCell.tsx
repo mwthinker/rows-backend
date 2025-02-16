@@ -14,7 +14,7 @@ function BoardCell({cell, rowIndex, colIndex, handleClick}: propTypes) {
       ${cell === 'X' ? 'filled text-red-600' : 'filled text-blue-600'}
       `}
     >{cell}</button>
-  )
+  );
 }
 
 export default BoardCell;

@@ -9,7 +9,7 @@ interface propTypes {
 
 function Board({board, gridSize, cellSize, handleClick}: propTypes) {
   return (
-    <div className={`grid gap-0`}
+    <div className={'grid gap-0'}
       style={{
         gridTemplateColumns: `repeat(${gridSize}, ${cellSize}px)`,
         gridTemplateRows: `repeat(${gridSize}, ${cellSize}px)`,
@@ -21,7 +21,7 @@ function Board({board, gridSize, cellSize, handleClick}: propTypes) {
         ))
       )}
     </div>
-  )
+  );
 }
 
 export default Board;

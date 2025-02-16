@@ -37,6 +37,12 @@ More info [here](https://yarnpkg.com/getting-started/editor-sdks#vscode)
 
 CSS files must be set to language Tailwind CSS in order to get IntelliSense.
 
+To get eslint to work, install the ESLint extension in VSCode. Add to settings.json:
+```json
+"eslint.useFlatConfig": true,
+"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"]
+```
+
 
 ```bash
 # Dummy server (probably broken)

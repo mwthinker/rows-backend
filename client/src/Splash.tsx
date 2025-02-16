@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from './services/WebSocketContext';
 
 export function Splash() {
   const navigate = useNavigate();

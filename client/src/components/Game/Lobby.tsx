@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWebSocket } from '../../WebSocketContext';
+import { useWebSocket } from '../../services/WebSocketContext';
 
 type Game = {
   gameId: string;
@@ -18,7 +18,7 @@ export function Lobby({ gameId }: { gameId: string }) {
 
     const subscription = socket.subscribe({
       next: (message: any) => {
-        console.log("Got a message!", message);
+        console.log('Got a message!', message);
         if (message.type === 'S2C_BOARD') {
           setGame(message.state);
           
@@ -33,9 +33,7 @@ export function Lobby({ gameId }: { gameId: string }) {
     const GET_BOARD = {
       type: 'C2S_GET_BOARD',
       gameId
-    }
-
-    console.log({ GET_BOARD })
+    };
 
     // Request initial lobby state
     socket.next(GET_BOARD);

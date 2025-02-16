@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from '@services/WebSocketContext';
+//import type { MessageUnion, S2cGames, S2cCreatedGame } from './protocol/protocol';
 
-const C2S_GET_ROOMS = {
-  type: "C2S_GET_ROOMS"
-}
+const C2S_GET_GAMES = {
+  type: 'C2S_GET_GAMES'
+};
 
 const C2S_CREATE_GAME = {
-  type: "C2S_CREATE_GAME"
-}
+  type: 'C2S_CREATE_GAME'
+};
 
 type Game = {
   gameId: string;
   players: any[];
   started?: boolean;
-}
+};
 
 export function Games() {
   const navigate = useNavigate();
@@ -22,22 +23,22 @@ export function Games() {
   const [games, setGames] = useState<Game[]>([]);
   const { socket, isConnected } = useWebSocket();
 
-  const handleRequestRooms = () => {
+  const handleRequestRooms = useCallback(() => {
     if (!socket || !isConnected) return;
-    socket.next(C2S_GET_ROOMS);
-  };
+    socket.next(C2S_GET_GAMES);
+  }, [socket, isConnected]);
 
   const handleCreateGame = () => {
     if (!socket || !isConnected) return;
     socket.next(C2S_CREATE_GAME);
   };
-
+ 
   useEffect(() => {
     if (!socket || !isConnected) return;
 
     const subscription = socket.subscribe({
       next: (message: any) => {
-        if (message.type === 'S2C_ROOMS') {
+        if (message.type === 'S2C_GAMES') {
           setGames(message.games || []);
           return;
         }
@@ -49,7 +50,7 @@ export function Games() {
         }
 
         if (message.type === 'S2C_CREATE_GAME') {
-          alert("Game was created! Now we would redirect into the lobby. For now, refresh page to see the new record.");
+          alert('Game was created! Now we would redirect into the lobby. For now, refresh page to see the new record.');
           return;
         }
 
@@ -107,7 +108,7 @@ export function Games() {
           onClick={handleCreateGame}
         >
           Create Game
-        </button>           
+        </button>
       </div>
     </div>
   );
