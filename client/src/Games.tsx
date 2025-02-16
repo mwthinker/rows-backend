@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWebSocket } from '@services/WebSocketContext';
+import { useWebSocket } from './services/WebSocketContext';
 //import type { MessageUnion, S2cGames, S2cCreatedGame } from './protocol/protocol';
 
 const C2S_GET_GAMES = {
