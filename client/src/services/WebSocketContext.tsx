@@ -17,6 +17,7 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const socket$ = webSocket('ws://localhost:3000/ws');
+    console.log('WebSocket connection established successfully.');
     setSocket(socket$);
 
     const subscription = socket$.pipe(
