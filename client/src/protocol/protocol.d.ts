@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2025-02-15 18:26:14.
+// Generated using typescript-generator version 3.2.1263 on 2025-02-17 16:57:32.
 
 export interface Message {
     type: "ERROR" | "S2C_CREATE_GAME" | "S2C_JOIN_GAME" | "S2C_USER" | "S2C_GAME_MOVE" | "S2C_GAMES" | "S2C_GAME" | "C2S_GAME_MOVE" | "C2S_GET_GAMES" | "C2S_CREATE_GAME" | "C2S_JOIN_GAME" | "C2S_GET_GAME";

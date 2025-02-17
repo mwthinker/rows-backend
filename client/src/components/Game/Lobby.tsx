@@ -30,16 +30,14 @@ export function Lobby({ gameId }: { gameId: string }) {
       }
     });
 
-    const GET_BOARD = {
-      type: 'C2S_GET_BOARD',
+    const C2S_GET_GAME = {
+      type: 'C2S_GET_GAME',
       gameId
     };
 
     // Request initial lobby state
-    socket.next(GET_BOARD);
-
-
-
+    console.log('Sending C2S_GET_GAME');
+    socket.next(C2S_GET_GAME);
     return () => subscription.unsubscribe();
   }, [socket, isConnected, gameId, navigate]);
 
