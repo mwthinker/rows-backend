@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from './services/WebSocketContext';
+import { Game, S2cGames, S2cCreatedGame } from '@protocol/protocol';
 
 const C2S_GET_GAMES = {
   type: 'C2S_GET_GAMES'
@@ -8,27 +9,6 @@ const C2S_GET_GAMES = {
 
 const C2S_CREATE_GAME = {
   type: 'C2S_CREATE_GAME'
-};
-
-type Player = {
-  id: string;
-  name: string;
-};
-
-type Game = {
-  gameId: string;
-  players: Player[];
-  started?: boolean;
-};
-
-type S2cGames = {
-  type: 'S2C_GAMES';
-  games: Game[];
-};
-
-type S2cCreatedGame = {
-  type: 'S2C_CREATED_GAME';
-  gameId: string;
 };
 
 type ServerMessage = S2cGames | S2cCreatedGame | any;
